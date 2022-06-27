@@ -8,6 +8,10 @@ try {
 
 $(document).ready(function(){
 
+
+  window.sessionStorage.clear();
+
+  // select primary platform
   $(".icon-box").click(function(){
       platformSelected = $(this).attr('id');
       currPlatform = window.sessionStorage.getItem("primaryPlatform");
@@ -178,27 +182,68 @@ function getPrimaryPlatformPoints(primaryPlatform){
 
 function getTotalViewsPoints(views){
   var numPoints = 0;
-  if (totalViews == 50000){
+  if (views == 50000){
     numPoints = 5;
-  }else if (totalViews == 300000){
+  }else if (views == 300000){
     numPoints = 10;
-  }else if (totalViews == 750000){
+  }else if (views == 750000){
     numPoints = 20;
-  }else if (totalViews == 50000000){
+  }else if (views == 50000000){
     numPoints = 30;
-  }else if (totalViews == 300000000){
+  }else if (views == 300000000){
     numPoints = 50;
-  }else if (totalViews == 750000000){
+  }else if (views == 750000000){
     numPoints = 70;
-  }else if (totalViews == 1000000000){
+  }else if (views == 1000000000){
     numPoints = 100;
   }
   return numPoints
 }
 
-function calculateSpringScore(){
+function checkPrimaryPlatform(primaryPlatform) {
   
-  displayLoader();
+    if (primaryPlatform == "youtube") {
+      if (document.getElementById("youtube-url").value == "") {
+        return false;
+      } else if (document.getElementById("youtube-subscribers").value == "") {
+        return false;
+      } else {
+        return true;
+      }
+    } else if (primaryPlatform == "instagram") {
+      if (document.getElementById("instagram-url").value == "") {
+        return false;
+      } else if (document.getElementById("instagram-followers").value == "") {
+        return false;
+      } else {
+        return true;
+      }
+    } else if (primaryPlatform == "tiktok") {
+      if (document.getElementById("tiktok-url").value == "") {
+        return false;
+      } else if (document.getElementById("tiktok-followers").value == "") {
+        return false;
+      } else {
+        return true;
+      }
+    } else if (primaryPlatform == "twitch") {
+      if (document.getElementById("twitch-url").value == "") {
+        return false;
+      } else if (document.getElementById("twitch-subscribers").value == "") {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+  
+  
+}
+
+function calculateSpringScore(){
+
+  
+
 
   var numPoints = 0;
 
@@ -208,47 +253,53 @@ function calculateSpringScore(){
   var totalViews = getTotalViews(); // median total
   var timeActive = getTimeActive(); // median time
   var domainChoice = getDomainChoice(); // 1 or 0 
+  
 
-  numPoints+=getPlatformPoints(urls); // points per platform
-  numPoints+=getPrimaryPlatformPoints(primaryPlatform); //points for primary platform
-  numPoints+=getTotalViewsPoints(totalViews) // points for total views
+  if (checkPrimaryPlatform(primaryPlatform) == true) {
+    displayLoader();
+    numPoints+=getPlatformPoints(urls); // points per platform
+    numPoints+=getPrimaryPlatformPoints(primaryPlatform); //points for primary platform
+    numPoints+=getTotalViewsPoints(totalViews) // points for total views
 
-  //KNN model -> Points
-  numPoints = 180;
+    numPoints = 180;//knn model
 
-  //return range
-  if (numPoints <= 50){
-    $('#springscore-results').text("up to $1,000");
-  }else if (numPoints <= 75){
-    $('#springscore-results').text("$1,000 - $10,000");
-  }else if (numPoints <= 100){
-    $('#springscore-results').text("$10,000 - $25,000");
-  }else if (numPoints <= 120){
-    $('#springscore-results').text("$25,000 - $50,000");
-  }else if (numPoints <= 140){
-    $('#springscore-results').text("$50,000 - $100,000");
-  }else if (numPoints <= 190){
-    $('#springscore-results').text("$100,000 - $200,000");
-  }else{
-    $('#springscore-results').text("over $200,000");
+    //return range
+    if (numPoints <= 50){
+      $('#springscore-results').text("up to $1,000");
+    }else if (numPoints <= 75){
+      $('#springscore-results').text("$1,000 - $10,000");
+    }else if (numPoints <= 100){
+      $('#springscore-results').text("$10,000 - $25,000");
+    }else if (numPoints <= 120){
+      $('#springscore-results').text("$25,000 - $50,000");
+    }else if (numPoints <= 140){
+      $('#springscore-results').text("$50,000 - $100,000");
+    }else if (numPoints <= 190){
+      $('#springscore-results').text("$100,000 - $200,000");
+    }else{
+      $('#springscore-results').text("over $200,000");
+    }
+    // 0:youtube, 1:instagram, 2:tiktok, 3:twitch
+    // submitUser(
+    //   urls[0], 
+    //   urls[1], 
+    //   urls[2], 
+    //   urls[3], 
+    //   subscribers[0], 
+    //   subscribers[1], 
+    //   subscribers[2], 
+    //   subscribers[3], 
+    //   primaryPlatform, 
+    //   totalViews, 
+    //   timeActive, 
+    //   domainChoice, 
+    //   numPoints);
+
+    displayResults();
+
+  } else {
+    alert("Please fill out all the fields in your primary platform");
   }
-  // 0:youtube, 1:instagram, 2:tiktok, 3:twitch
-  // submitUser(
-  //   urls[0], 
-  //   urls[1], 
-  //   urls[2], 
-  //   urls[3], 
-  //   subscribers[0], 
-  //   subscribers[1], 
-  //   subscribers[2], 
-  //   subscribers[3], 
-  //   primaryPlatform, 
-  //   totalViews, 
-  //   timeActive, 
-  //   domainChoice, 
-  //   numPoints);
-
-  displayResults();
 
 }
 
