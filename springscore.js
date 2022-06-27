@@ -6,9 +6,7 @@ try {
   console.error("Failed to log in", err);
 }
 
-
 $(document).ready(function(){
-
 
   $(".icon-box").click(function(){
       platformSelected = $(this).attr('id');
@@ -44,8 +42,6 @@ $(document).ready(function(){
     $('.total-views').text($(this).html());
   });
 
-
-
 });
 
 function submitUser(youtubeURL, instagramURL, tiktokURL, twitchURL, youtubeSubscribers, instagramFollowers, tiktokFollowers, twitchSubscribers, primaryPlatform, totalViews, timeActive, domainChoice, numPoints){
@@ -66,84 +62,156 @@ function submitUser(youtubeURL, instagramURL, tiktokURL, twitchURL, youtubeSubsc
       domainChoice: domainChoice,
       springScore: numPoints
     });
-  }
+}
 
- function calculateSpringScore(){
-
+function displayLoader(){
   setTimeout(function() {
-       $('#loader-wrapper').fadeOut();
-       $(".start-button").css("display", "block");
-       $("#springscore-text").css("display", "block");
-  }, 3000);
+    $('#loader-wrapper').fadeOut();
+    $(".start-button").css("display", "block");
+    $("#springscore-text").css("display", "block");
+}, 3000);
+}
 
+function displayResults(){
+  $('.popup-wrap').fadeIn(500);
+  $('.popup-box').removeClass('transform-out').addClass('transform-in');
+}
 
-  var numPoints = 0;
-
+function getURLs(){
   var youtubeURL = document.getElementById("youtube-url").value;
   var instagramURL = document.getElementById("instagram-url").value;
   var tiktokURL = document.getElementById("tiktok-url").value;
   var twitchURL = document.getElementById("twitch-url").value;
+  return [youtubeURL, instagramURL, tiktokURL, twitchURL]
+}
 
-  var youtubeSubscribers = document.getElementById("youtube-subscribers").value;
-  var instagramFollowers = document.getElementById("instagram-followers").value;
-  var tiktokFollowers = document.getElementById("tiktok-followers").value;
-  var twitchSubscribers = document.getElementById("twitch-subscribers").value;
+function getSubscribers(){
+  var youtubeSubscribers = parseInt(document.getElementById("youtube-subscribers").value);
+  var instagramFollowers = parseInt(document.getElementById("instagram-followers").value);
+  var tiktokFollowers = parseInt(document.getElementById("tiktok-followers").value);
+  var twitchSubscribers = parseInt(document.getElementById("twitch-subscribers").value);
+  return [youtubeSubscribers, instagramFollowers, tiktokFollowers, twitchSubscribers]
+}
 
+function getPrimaryPlatform(){
   var primaryPlatformCard = window.sessionStorage.getItem("primaryPlatform");
   var primaryPlatform = "";
   if (primaryPlatformCard != null){
-    primaryPlatform = primaryPlatformCard.replace("-icon-box","");
+    primaryPlatform = primaryPlatformCard.replace("-icon-box", "");
   }
-  // var creatorRange = window.sessionStorage.getItem("averageCreatorRange");
-  // var domainChoice = window.sessionStorage.getItem("domainChoice"); //yes-domain or no-domain
+  return primaryPlatform
+}
+
+function getTotalViews(){
   var totalViews = $('.total-views').text(); //text range
-  var timeActive = $('.time-active').text();
-  var domainChoice = $('.custom-domain').text();
-
-  $('.popup-wrap').fadeIn(500);
-  $('.popup-box').removeClass('transform-out').addClass('transform-in');
-
-  //Number of platforms -> Points
-  if (youtubeURL != ""){
-    numPoints+=1;
-  }
-  if (instagramURL != ""){
-    numPoints+=1;
-  }
-  if (tiktokURL != ""){
-    numPoints+=1;
-  }
-  if (twitchURL != ""){
-    numPoints+=1;
-  }
-
-  //Primary platform -> Points
-  if (primaryPlatform == "youtube"){
-    numPoints += 5;
-  }else if (primaryPlatform == "instagram"){
-    numPoints += 5;
-  }else if (primaryPlatform == "tiktok"){
-    numPoints += 2;
-  }else if (primaryPlatform == "twitch"){
-    numPoints += 2;
-  }
-
-  //Total views -> Points
+  var medianTotal = 0
   if (totalViews == "0 - 100k"){
-    numPoints += 5;
-  }else if (totalViews == "100k - 500k"){
-    numPoints += 10;
-  }else if (totalViews == "500k - 1 million"){
-    numPoints += 20;
-  }else if (totalViews == "1 - 100 million"){
-    numPoints += 30;
-  }else if (totalViews == "100 - 500 million"){
-    numPoints += 50;
-  }else if (totalViews == "500 - 1 billion"){
-    numPoints += 70;
-  }else if (totalViews == "1+ billion"){
-    numPoints += 100;
+    medianTotal = 50000;
+  }else if(totalViews == "100k - 500k"){
+    medianTotal = 300000;
+  }else if(totalViews == "500k - 1 million"){
+    medianTotal = 750000;
+  }else if(totalViews == "1 - 100 million"){
+    medianTotal = 50000000;
+  }else if(totalViews == "100 - 500 million"){
+    medianTotal = 300000000;
+  }else if(totalViews == "500 - 1 billion"){
+    medianTotal = 750000000;
+  }else if(totalViews == "1+ billion"){
+    medianTotal = 1000000000;
   }
+  return medianTotal
+}
+
+function getTimeActive(){
+  var timeActive = $('.time-active').text();
+  var medianTime = 0;
+  if (timeActive == "0 - 6 months"){
+    medianTime = 3;
+  }else if(timeActive == "6 - 12 months"){
+    medianTime = 9;
+  }else if(timeActive == "1 - 2 years"){
+    medianTime = 18;
+  }else if(timeActive == "2 - 4 years"){
+    medianTime = 36;
+  }else if(timeActive == "4+ years"){
+    medianTime = 48;
+  }
+  return medianTime
+}
+
+function getDomainChoice(){
+  var domainChoice = $('.custom-domain').text();
+  var domainVal = 0;
+  //Convert domain choice to 1 or 0 (true or false)
+  if(domainChoice == "Yes"){
+    domainVal = 1;
+  }else if(domainChoice == "No"){
+    domainVal = 0;
+  }
+  return domainVal
+}
+
+function getPlatformPoints(urls){
+  var numPoints = 0
+  for (var i = 0; i < urls.length; i++){
+    if(urls[i] != ""){
+      numPoints+=1;
+    }
+  }
+  return numPoints
+}
+
+function getPrimaryPlatformPoints(primaryPlatform){
+  primaryPoints = 0;
+  if (primaryPlatform == "youtube"){
+    primaryPoints = 5;
+  }else if (primaryPlatform == "instagram"){
+    primaryPoints = 5;
+  }else if (primaryPlatform == "tiktok"){
+    primaryPoints = 2;
+  }else if (primaryPlatform == "twitch"){
+    primaryPoints = 2;
+  }
+  return primaryPoints
+}
+
+function getTotalViewsPoints(views){
+  var numPoints = 0;
+  if (totalViews == 50000){
+    numPoints = 5;
+  }else if (totalViews == 300000){
+    numPoints = 10;
+  }else if (totalViews == 750000){
+    numPoints = 20;
+  }else if (totalViews == 50000000){
+    numPoints = 30;
+  }else if (totalViews == 300000000){
+    numPoints = 50;
+  }else if (totalViews == 750000000){
+    numPoints = 70;
+  }else if (totalViews == 1000000000){
+    numPoints = 100;
+  }
+  return numPoints
+}
+
+function calculateSpringScore(){
+  
+  displayLoader();
+
+  var numPoints = 0;
+
+  var urls = getURLs(); // [youtube, instagram, tiktok, twitch]
+  var subscribers = getSubscribers(); // [youtube, instagram, tiktok, twitch]
+  var primaryPlatform = getPrimaryPlatform(); // "youtube"
+  var totalViews = getTotalViews(); // median total
+  var timeActive = getTimeActive(); // median time
+  var domainChoice = getDomainChoice(); // 1 or 0 
+
+  numPoints+=getPlatformPoints(urls); // points per platform
+  numPoints+=getPrimaryPlatformPoints(primaryPlatform); //points for primary platform
+  numPoints+=getTotalViewsPoints(totalViews) // points for total views
 
   //KNN model -> Points
   numPoints = 180;
@@ -164,8 +232,23 @@ function submitUser(youtubeURL, instagramURL, tiktokURL, twitchURL, youtubeSubsc
   }else{
     $('#springscore-results').text("over $200,000");
   }
+  // 0:youtube, 1:instagram, 2:tiktok, 3:twitch
+  // submitUser(
+  //   urls[0], 
+  //   urls[1], 
+  //   urls[2], 
+  //   urls[3], 
+  //   subscribers[0], 
+  //   subscribers[1], 
+  //   subscribers[2], 
+  //   subscribers[3], 
+  //   primaryPlatform, 
+  //   totalViews, 
+  //   timeActive, 
+  //   domainChoice, 
+  //   numPoints);
 
-  // submitUser(youtubeURL, instagramURL, tiktokURL, twitchURL, youtubeSubscribers, instagramFollowers, tiktokFollowers, twitchSubscribers, primaryPlatform, totalViews, timeActive, domainChoice, numPoints);
+  displayResults();
 
 }
 
