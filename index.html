@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" type="text/css" href="index.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  <!-- <script src="snowflake.js"></script> -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/1003c10eef.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/realm-web@1.2.0/dist/bundle.iife.js"></script>
+  <script src="springscore.js"></script>
+
+
+</head>
+
+<body style = "background-color: #020403">
+
+  <div class = "title"> SpringScore<sup>TM</sup></div>
+  <div class = "midtitle"> Discover your earning potential.</div>
+  <div class = "title-underline"> </div>
+
+
+  <!-- <div class = "first-page" id = "first-page-id">
+    <div class = "subtitle"> Please select your Primary Platform</div>
+      <div class = "icon-options">
+        <div class = "select-card" id = "youtube-card">
+          <i class="fa-brands fa-youtube icon-selection"></i>
+          <div class = "youtube-text icon-text"> Youtube</div>
+        </div>
+        <div class = "select-card" id = "instagram-card">
+          <i class="fa-brands fa-instagram icon-selection"></i>
+          <div class = "instagram-text icon-text"> Instagram</div>
+       </div>
+        <div class = "select-card" id = "tiktok-card">
+          <i class="fa-brands fa-tiktok icon-selection"></i>
+          <div class = "tiktok-text icon-text"> Tiktok</div>
+        </div>
+        <div class = "select-card" id = "twitch-card">
+          <i class="fa-brands fa-twitch icon-selection"></i>
+          <div class = "twitch-text icon-text"> Twitch</div>
+        </div>
+      </div>
+    </div> -->
+
+  <div class = "second-page" id = "second-page-id">
+    <div class = "subtitle"> Share your social accounts with us to find out how much money you could make selling on Spring.</div>
+    <div class = "socials-box">
+      <div class = "social-card youtube" id = "youtube-card-id">
+        <div class = "icon-box" id = "youtube-icon-box">
+          <i class="fa-brands fa-youtube social-icon youtube-icon"></i>
+        </div>
+        <div class = "social-text"> Youtube</div>
+        <div class = "social-underline"> </div>
+        <input id = "youtube-url" class = "handle-box" placeholder = "Profile URL"></input>
+        <input id = "youtube-subscribers" class = "handle-box" placeholder = "Subscribers"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+      </div>
+      <div class = "social-card instagram" id = "instagram-card-id">
+        <div class = "icon-box" id = "instagram-icon-box">
+          <i class="fa-brands fa-instagram social-icon instagram-icon"></i>
+        </div>
+        <div class = "social-text"> Instagram</div>
+        <div class = "social-underline"> </div>
+        <input id = "instagram-url" class = "handle-box" placeholder = "Profile URL"></input>
+        <input id = "instagram-followers" class = "handle-box" placeholder = "Followers" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></input>
+      </div>
+      <div class = "social-card tiktok" id = "tiktok-card-id">
+        <div class = "icon-box" id = "tiktok-icon-box">
+          <i class="fa-brands fa-tiktok social-icon tiktok-icon"></i>
+        </div>
+        <div class = "social-text"> Tiktok</div>
+        <div class = "social-underline"> </div>
+        <input id = "tiktok-url" class = "handle-box" placeholder = "Profile URL"></input>
+        <input id = "tiktok-followers" class = "handle-box" placeholder = "Followers" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></input>
+      </div>
+      <div class = "social-card twitch" id = "twitch-card-id">
+        <div class = "icon-box" id = "twitch-icon-box">
+          <i class="fa-brands fa-twitch social-icon twitch-icon"></i>
+        </div>
+        <div class = "social-text"> Twitch</div>
+        <div class = "social-underline"> </div>
+        <input id = "twitch-url" class = "handle-box" placeholder = "Profile URL"></input>
+        <input id = "twitch-subscribers" class = "handle-box" placeholder = "Subscribers" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></input>
+      </div>
+    </div>
+
+    <div class = "price-box">
+      <div class="dropdown">
+        <input class="dropdown-toggle" type="text">
+        <div class="dropdown-text time-active">Time Active</div>
+        <ul class="dropdown-content">
+          <li><a class = "range-tier" href="#">0 - 6 months</a></li>
+          <li><a class = "range-tier" href="#">6 - 12 months</a></li>
+          <li><a class = "range-tier"href="#">1 - 2 years</a></li>
+          <li><a class = "range-tier" href="#">2 - 4 years</a></li>
+          <li><a class = "range-tier" href="#">4+ years</a></li>
+        </ul>
+      </div>
+
+      <div class="dropdown">
+        <input class="dropdown-toggle" type="text">
+        <div class="dropdown-text custom-domain">Do you have a website?</div>
+        <ul class="dropdown-content">
+          <li><a class = "domain-tier" href="#">Yes</a></li>
+          <li><a class = "domain-tier" href="#">No</a></li>
+        </ul>
+      </div>
+
+      <div class="dropdown">
+        <input class="dropdown-toggle" type="text">
+        <div class="dropdown-text total-views">Total number of views</div>
+        <ul class="dropdown-content">
+          <li><a class = "view-tier" value = "1" id = "hello" href="#">0 - 100k</a></li>
+          <li><a class = "view-tier" value = "2" href="#">100k - 500k</a></li>
+          <li><a class = "view-tier" value = "3" href="#">500k - 1 million</a></li>
+          <li><a class = "view-tier" value = "4" href="#">1 - 100 million</a></li>
+          <li><a class = "view-tier" value = "5" href="#">100 - 500 million</a></li>
+          <li><a class = "view-tier" value = "6" href="#">500 - 1 billion</a></li>
+          <li><a class = "view-tier" value = "7" href="#">1+ billion</a></li>
+        </ul>
+      </div>
+
+
+    </div>
+    <!-- <div class = "price-question-wrapper"><a id = "price-question">How long have you been a creator?</a></div>
+
+    <div class = "price-box">
+
+      <div class = "creator-range" id = "range-1"><a class = "range-text">0 - 6 months</a></div>
+      <div class = "creator-range" id = "range-2"><a class = "range-text">6 - 12 months</a></div>
+      <div class = "creator-range" id = "range-3"><a class = "range-text">1 - 2 years</a></div>
+      <div class = "creator-range" id = "range-4"><a class = "range-text">2 - 4 years</a></div>
+      <div class = "creator-range" id = "range-5"><a class = "range-text">4+ years</a></div>
+
+    </div>
+
+    <div class = "domain-question-wrapper"><a id = "domain-question">Would you purchase a custom domain?</a></div>
+
+    <div class = "domain-box">
+      <div class = "domain-choice" id = "yes-domain"><i class="fa-solid fa-check domain-select" ></i></div>
+      <div class = "domain-choice" id = "no-domain"><i class="fa-solid fa-xmark domain-select"></i></div>
+
+    </div> -->
+
+    <!-- <div class="dropdown">
+      <input class="dropdown-toggle" type="text">
+      <div class="dropdown-text">Account</div>
+      <ul class="dropdown-content">
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Log out</a></li>
+      </ul>
+    </div> -->
+
+    <button id = "calculate-button" type="button" onclick = "calculateSpringScore()">SpringScore</button>
+
+    <!-- <div class = "earnings-box">
+      <div class = "earnings-container">
+        <div class = "earnings-text-wrapper"><a id = "earnings-text">Based on your SpringScore<sup>TM</sup> you could be making <span>$25,000-$50,000</span> per month selling products on Spring.</a></div>
+        <div class = "start-button"><a id = "start-creating">Start Creating</a></div>
+      </div>
+
+    </div> -->
+
+    <div class="popup-wrap">
+    <div class="popup-box">
+      <div id = "exit-container"><i class="fa-solid fa-xmark exit-score popup-close"></i></div>
+
+      <a id = "springscore-text">Based on your SpringScore<sup>TM</sup> you could be making <span id = "springscore-results">$25,000-$50,000</span> per month selling products on Spring.</a>
+      <div class = "start-button" onclick="location.href='https://teespring.com/signup?cta=start_designing'"><a id = "start-creating">Start Creating</a></div>
+      <!-- <a class="close-btn popup-close" href="#">x</a> -->
+      <div id = "loader-wrapper">
+        <a class = "calculating-text">Compiling Data</a>
+        <!-- <div id="loader">
+        	<div id="d1"></div>
+        	<div id="d2"></div>
+        	<div id="d3"></div>
+        	<div id="d4"></div>
+        	<div id="d5"></div>
+        </div> -->
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+  </div>
+
+  <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.6.0/stitch.js"></script>
+  <!-- <script src="https://unpkg.com/realm-web@1.2.0/dist/bundle.iife.js"></script> -->
+
+
+</body>
+
+
+</html>
